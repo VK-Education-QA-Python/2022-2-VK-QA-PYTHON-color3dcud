@@ -1,8 +1,8 @@
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.chrome.options import Options
 
 
 def pytest_addoption(parser):
@@ -25,7 +25,6 @@ def config(request):
 
 @pytest.fixture(scope='function')
 def driver(config):
-
     browser = config["browser"]
     url = config["url"]
     headless = config["headless"]

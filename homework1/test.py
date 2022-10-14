@@ -1,5 +1,6 @@
-import pytest
 import random
+
+import pytest
 
 from base import BaseCase
 from ui.locators import basic_locators
