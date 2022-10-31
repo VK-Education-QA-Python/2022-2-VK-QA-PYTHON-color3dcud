@@ -4,6 +4,7 @@ from base import ApiBase
 
 
 class TestCampaign(ApiBase):
+    @pytest.mark.skip('SKIP')
     def test_new_campaign_creation(self):
         pass
 
