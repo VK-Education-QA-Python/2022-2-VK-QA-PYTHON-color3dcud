@@ -84,15 +84,15 @@ class ApiClient:
         response = self._request(method='POST', full_url=url, params=params, headers=headers, data=data,
                                  allow_redirects=True, jsonify=False)
 
-
-        return self.session.cookies
+        return response
 
     def get_csrf(self):
         location = 'csrf/'
-        cookie = self.get_auth()
+        self.get_auth()
 
         response = self._request(method='GET', location=location, jsonify=False, allow_redirects=True)
         self.set_x_csrf_header()
+
         return response
 
     def set_x_csrf_header(self):
@@ -134,8 +134,23 @@ class ApiClient:
 
         return response
 
-    def get_bulk_vk_groups(self):
-        pass
+    def delete_vk_group(self, vk_group_id):
+        location = f'api/v2/remarketing/vk_groups/{vk_group_id}.json'
+        response = self._request(method='DELETE', location=location, expected_status=204, jsonify=False)
+
+        return response
+
+    def get_your_vk_groups(self):
+        location = 'api/v2/remarketing/vk_groups.json'
+
+        params = {
+            'fields': 'id,object_id,name,users_count,url',
+            'limit': 50
+        }
+
+        response = self._request(method='GET', location=location, params=params, expected_status=200)
+
+        return response
 
     def post_segments_add(self, name, relations):
         location = 'api/v2/remarketing/segments.json'
@@ -164,7 +179,21 @@ class ApiClient:
 
     def delete_segment(self, segment_id):
         location = f'api/v2/remarketing/segments/{segment_id}.json'
-        response = self._request(method='DELETE', location=location, expected_status=204)
+        response = self._request(method='DELETE', location=location, expected_status=204, jsonify=False)
+
+        return response
+
+    def get_segments_list(self):
+        location = 'api/v2/remarketing/segments.json'
+
+        params_dict = {
+            'fields': 'relations__object_type,relations__object_id,relations__params,relations__params__score,'
+                      'relations__id,relations_count,id,name,pass_condition,created,campaign_ids,users,flags',
+            'limit': 500
+        }
+        params = self.params_to_string(params=params_dict)
+
+        response = self._request(method='GET',location=location, params=params)
 
         return response
 
