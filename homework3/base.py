@@ -23,12 +23,12 @@ class ApiBase:
                 break
         return found
 
-    def check_segment_in_segments_list(self, segment_id):
+    def check_segment_in_segments_list(self, segment_id, segment_name):
         found = False
         your_segments = self.api_client.get_segments_list()
 
         for item in your_segments['items']:
-            if item['id'] == segment_id:
+            if item['id'] == segment_id and item['name'] == segment_name:
                 found = True
                 break
         return found
@@ -60,7 +60,7 @@ class ApiBase:
         yield segment_data
 
         self.api_client.delete_segment(segment_id=segment_id)
-        assert self.check_segment_in_segments_list(segment_id=segment_id) is False
+        assert self.check_segment_in_segments_list(segment_id=segment_id, segment_name=segment_data.name) is False
 
     @pytest.fixture(scope='function')
     def new_games_segment(self):
@@ -72,4 +72,4 @@ class ApiBase:
         yield segment_data
 
         self.api_client.delete_segment(segment_id=segment_id)
-        assert self.check_segment_in_segments_list(segment_id=segment_id) is False
+        assert self.check_segment_in_segments_list(segment_id=segment_id, segment_name=segment_data.name) is False
