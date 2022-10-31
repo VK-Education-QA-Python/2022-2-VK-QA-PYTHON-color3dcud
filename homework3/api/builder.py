@@ -7,6 +7,19 @@ faker = faker.Faker()
 
 class Builder:
     @staticmethod
+    def group(url=None):
+        @dataclass
+        class Group:
+            group_url: str
+            group_id: None = None
+            group_id_list: None = None
+
+        if url is None:
+            url = 'https://vk.com/vkedu'
+
+        return Group(group_url=url)
+
+    @staticmethod
     def segment(name=None, segment_type=None, vk_group_id=None):
         @dataclass
         class Segment:
