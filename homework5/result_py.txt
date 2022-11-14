@@ -1,0 +1,26 @@
+Общее кол-во запрсоов -  225133
+
+ Общее кол-во запросов по типу:
+POST 102503
+GET 122095
+HEAD 528
+PUT 6
+
+ Топ 10 запросов:
+/administrator/index.php - 68323 запросов
+http://almhuette-raith.at/administrator/index.ph/administrator/index.php - 29115 запросов
+/ - 5084 запросов
+/robots.txt - 3172 запросов
+http://almhuette-raith.at/administrator/index.ph/administrator/index.php - 2699 запросов
+http://www.almhuette-raith.at/apache-log/access.log - 1923 запросов
+/administrator/index.php - 1868 запросов
+/favicon.ico - 1761 запросов
+http://www.almhuette-raith.at/templates/_system/css/general.css - 1691 запросов
+http://almhuette-raith.at/administrator/index.php - 1556 запросов
+
+ Топ-5 самых больших по размеру запросов с клиентской ошибкой:
+Запрос /index.php?option=com_phocagallery&view=category&id=%28SELECT%20%28CASE%20WHEN%20%281753%3D1753%29%20THEN%201753%20ELSE%201753%2A%28SELECT%201753%20FROM%20INFORMATION_SCHEMA.CHARACTER_SETS%29%20END%29%29&Itemid=53, size= 1417, code= 404, ip= 189.217.45.73
+Запрос /index.php?option=com_phocagallery&view=category&id=%28SELECT%20%28CASE%20WHEN%20%289168%3D4696%29%20THEN%209168%20ELSE%209168%2A%28SELECT%209168%20FROM%20INFORMATION_SCHEMA.CHARACTER_SETS%29%20END%29%29&Itemid=53, size= 1417, code= 404, ip= 189.217.45.73
+Запрос /index.php?option=com_phocagallery&view=category&id=7806&Itemid=53, size= 1417, code= 404, ip= 189.217.45.73
+Запрос /index.php?option=com_phocagallery&view=category&id=4025&Itemid=53, size= 1417, code= 404, ip= 189.217.45.73
+Запрос /index.php?option=com_easyblog&view=dashboard&layout=write, size= 1397, code= 404, ip= 138.197.223.238
