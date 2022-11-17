@@ -1,7 +1,6 @@
 class SegmentRelations:
     @staticmethod
     def relations(vk_group_id=None):
-
         segment_relations = {
             'vk': [
                 {

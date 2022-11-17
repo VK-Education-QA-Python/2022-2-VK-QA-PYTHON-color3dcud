@@ -13,5 +13,6 @@ class ResponseErrorException(Exception):
 class ResponseJsonParseError(Exception):
     pass
 
+
 class MissingAuthorizationCookie(Exception):
     pass

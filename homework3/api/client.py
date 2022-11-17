@@ -1,10 +1,11 @@
-import requests
 from urllib.parse import urljoin
+
+import requests
+
 from api.custom_api_exceptions import *
 
 
 class ApiClient:
-
     COOKIES_LIST = ['mc', 'sdc', 'z', 'csrftoken']
 
     def __init__(self, base_url: str, login: str, password: str):
@@ -97,7 +98,6 @@ class ApiClient:
                 cookies[cookie]
             except:
                 raise MissingAuthorizationCookie(f'Authorization cookie - {cookie} - is missing')
-
 
     # Segments request start
 
