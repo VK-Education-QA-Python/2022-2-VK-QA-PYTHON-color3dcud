@@ -1,24 +1,11 @@
 import requests
 from urllib.parse import urljoin
-
-
-class ApiClientException(Exception):
-    pass
-
-
-class ResponseStatusCodeException(Exception):
-    pass
-
-
-class ResponseErrorException(Exception):
-    pass
-
-
-class ResponseJsonParseError(Exception):
-    pass
+from api.custom_api_exceptions import *
 
 
 class ApiClient:
+
+    COOKIES_LIST = ['mc', 'sdc', 'z', 'csrftoken']
 
     def __init__(self, base_url: str, login: str, password: str):
         self.base_url = base_url
@@ -92,6 +79,7 @@ class ApiClient:
 
         response = self._request(method='GET', location=location, jsonify=False, allow_redirects=True)
         self.set_x_csrf_header()
+        self.check_cookies()
 
         return response
 
@@ -100,6 +88,16 @@ class ApiClient:
         x_csrf_header = {'X-CSRFToken': f'{x_csrf}'}
         self.session.headers.update(x_csrf_header)
         return x_csrf_header
+
+    def check_cookies(self):
+        cookies = self.session.cookies.get_dict()
+
+        for cookie in self.COOKIES_LIST:
+            try:
+                cookies[cookie]
+            except:
+                raise MissingAuthorizationCookie(f'Authorization cookie - {cookie} - is missing')
+
 
     # Segments request start
 
@@ -193,11 +191,6 @@ class ApiClient:
         }
         params = self.params_to_string(params=params_dict)
 
-        response = self._request(method='GET',location=location, params=params)
+        response = self._request(method='GET', location=location, params=params)
 
         return response
-
-    # Campaigns requests start
-
-    def get_campaign_media(self):
-        pass

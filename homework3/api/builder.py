@@ -2,6 +2,9 @@ from dataclasses import dataclass
 
 import faker
 
+from static.default_urls import *
+from static.segment_relations import SegmentRelations
+
 faker = faker.Faker()
 
 
@@ -15,7 +18,7 @@ class Builder:
             group_id_list: None = None
 
         if url is None:
-            url = 'https://vk.com/vkedu'
+            url = DEFAULT_VK_GROUP_URL
 
         return Group(group_url=url)
 
@@ -28,35 +31,7 @@ class Builder:
             relations: list
             segment_id: None = None
 
-        segment_relations = {
-            'vk': [
-                {
-                    "object_type": "remarketing_vk_group",
-                    "params": {
-                        "source_id": vk_group_id,
-                        "type": "positive"
-                    }
-                }
-            ],
-            'games': [
-                {
-                    "object_type": "remarketing_player",
-                    "params": {
-                        "type": "positive",
-                        "left": 365,
-                        "right": 0
-                    }
-                },
-                {
-                    "object_type": "remarketing_payer",
-                    "params": {
-                        "type": "positive",
-                        "left": 365,
-                        "right": 0
-                    }
-                }
-            ]
-        }
+        segment_relations = SegmentRelations.relations(vk_group_id=vk_group_id)
 
         relations = []
 
@@ -72,9 +47,3 @@ class Builder:
             name = faker.bothify(f'{segment_type} from API test id = ?#?#?#?#?#?#?#?#?##?#?#?#?#?#?#?#?#')
 
         return Segment(name=name, segment_type=segment_type, relations=relations)
-
-    @staticmethod
-    def campaign(name=None):
-        @dataclass
-        class Campaign:
-            pass

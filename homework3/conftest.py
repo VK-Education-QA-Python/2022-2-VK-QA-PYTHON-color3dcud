@@ -2,10 +2,7 @@ import os
 import pytest
 
 from api.client import ApiClient
-
-
-login = 'hsabuse@yandex.ru'
-password = 'Qwe123-'
+from static.credentials import *
 
 
 def pytest_addoption(parser):
@@ -21,7 +18,7 @@ def config(request):
 
 @pytest.fixture(scope='session')
 def api_client(config):
-    return ApiClient(base_url=config['url'], login=login, password=password)
+    return ApiClient(base_url=config['url'], login=LOGIN, password=PASSWORD)
 
 
 @pytest.fixture(scope='session')

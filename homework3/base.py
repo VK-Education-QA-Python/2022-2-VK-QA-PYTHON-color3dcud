@@ -25,9 +25,9 @@ class ApiBase:
 
     def check_segment_in_segments_list(self, segment_id, segment_name):
         found = False
-        your_segments = self.api_client.get_segments_list()
+        my_segments = self.api_client.get_segments_list()
 
-        for item in your_segments['items']:
+        for item in my_segments['items']:
             if item['id'] == segment_id and item['name'] == segment_name:
                 found = True
                 break
@@ -47,7 +47,6 @@ class ApiBase:
         yield group_data
 
         self.api_client.delete_vk_group(vk_group_id=vk_group_id_list)
-        assert self.check_vk_group_in_group_list(vk_group_id=vk_group_id_list) is False
 
     @pytest.fixture(scope='function')
     def new_vk_segment(self, new_vk_edu_group):
@@ -60,7 +59,6 @@ class ApiBase:
         yield segment_data
 
         self.api_client.delete_segment(segment_id=segment_id)
-        assert self.check_segment_in_segments_list(segment_id=segment_id, segment_name=segment_data.name) is False
 
     @pytest.fixture(scope='function')
     def new_games_segment(self):
@@ -72,4 +70,3 @@ class ApiBase:
         yield segment_data
 
         self.api_client.delete_segment(segment_id=segment_id)
-        assert self.check_segment_in_segments_list(segment_id=segment_id, segment_name=segment_data.name) is False
