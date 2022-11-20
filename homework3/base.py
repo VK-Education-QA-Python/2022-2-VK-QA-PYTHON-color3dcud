@@ -15,24 +15,20 @@ class ApiBase:
             self.api_client.get_csrf()
 
     def check_vk_group_in_group_list(self, vk_group_id):
-        found = False
         your_groups = self.api_client.get_your_vk_groups()
 
         for item in your_groups['items']:
             if item['id'] == vk_group_id:
-                found = True
-                break
-        return found
+                return True
+        return False
 
     def check_segment_in_segments_list(self, segment_id, segment_name):
-        found = False
         my_segments = self.api_client.get_segments_list()
 
         for item in my_segments['items']:
             if item['id'] == segment_id and item['name'] == segment_name:
-                found = True
-                break
-        return found
+                return True
+        return False
 
     @pytest.fixture(scope='function')
     def new_vk_edu_group(self):

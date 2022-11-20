@@ -3,6 +3,8 @@ from urllib.parse import urljoin
 import requests
 
 from api.custom_api_exceptions import *
+from static.api_urls import *
+from static.requests_body import *
 
 
 class ApiClient:
@@ -49,25 +51,10 @@ class ApiClient:
 
     def get_auth(self):
 
-        url = 'https://auth-ac.my.com/auth'
-
-        params = {
-            'lang': 'ru',
-            'nosavelogin': 0
-        }
-
-        data = {
-            'email': self.login,
-            'password': self.password,
-            'continue': 'https://target-sandbox.my.com/auth/mycom?state=target_login%3D1%26ignore_opener%3D1#email',
-            'failure': 'https://account.my.com/login/'
-        }
-
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Origin': 'https://target-sandbox.my.com',
-            'Referer': 'https://target-sandbox.my.com/'
-        }
+        url = AUTH
+        params = GET_AUTH_PARAMS
+        data = get_auth_body(login=self.login, password=self.password)
+        headers = GET_AUTH_HEADERS
 
         response = self._request(method='POST', full_url=url, params=params, headers=headers, data=data,
                                  allow_redirects=True, jsonify=False)
@@ -75,7 +62,7 @@ class ApiClient:
         return response
 
     def get_csrf(self):
-        location = 'csrf/'
+        location = CSRF_LOCATION
         self.get_auth()
 
         response = self._request(method='GET', location=location, jsonify=False, allow_redirects=True)
@@ -102,93 +89,58 @@ class ApiClient:
     # Segments request start
 
     def get_vk_groups(self, full_url):
-        location = 'api/v2/vk_groups.json'
-
-        params = {
-            '_q': full_url
-        }
-
+        location = GET_VK_GROUPS_LOCATION
+        params = get_vk_groups_params(full_url=full_url)
         response = self._request(method='GET', location=location, params=params)
 
         return response
 
     def post_vk_group_add(self, vk_group_id):
-        location = 'api/v2/remarketing/vk_groups/bulk.json'
-
-        params_dict = {
-            'fields': 'id,object_id,name,users_count,url'
-        }
+        location = POST_VK_GROUP_ADD_LOCATION
+        params_dict = POST_VK_GROUP_ADD_PARAMS
         params = self.params_to_string(params_dict)
-
-        json = {
-            'items': [
-                {
-                    'object_id': vk_group_id
-                }
-            ]
-        }
+        json = post_vk_group_add_body(vk_group_id=vk_group_id)
 
         response = self._request(method='POST', location=location, params=params, json=json)
 
         return response
 
     def delete_vk_group(self, vk_group_id):
-        location = f'api/v2/remarketing/vk_groups/{vk_group_id}.json'
+        location = delete_vk_group_location(vk_group_id=vk_group_id)
+
         response = self._request(method='DELETE', location=location, expected_status=204, jsonify=False)
 
         return response
 
     def get_your_vk_groups(self):
-        location = 'api/v2/remarketing/vk_groups.json'
-
-        params = {
-            'fields': 'id,object_id,name,users_count,url',
-            'limit': 50
-        }
+        location = GET_YOUR_VK_GROUPS_LOCATION
+        params = GET_YOUR_VK_GROUPS_PARAMS
 
         response = self._request(method='GET', location=location, params=params, expected_status=200)
 
         return response
 
     def post_segments_add(self, name, relations):
-        location = 'api/v2/remarketing/segments.json'
+        location = POST_SEGMENT_ADD_LOCATION
 
-        params_dict = {
-            'fields': 'relations__object_type,relations__object_id,relations__params,'
-                      'relations__params__score,relations__id,relations_count,id,name,pass_condition,'
-                      'created,campaign_ids,users,flags'
-        }
+        params_dict = POST_SEGMENTS_ADD_PARAMS
         params = self.params_to_string(params_dict)
-
-        headers = {
-            'Content-Type': 'application/json'
-        }
-
-        json = {
-            "name": name,
-            "pass_condition": 1,
-            "relations": relations,
-            "logicType": "rule"
-        }
+        headers = POST_SEGMENTS_ADD_HEADERS
+        json = post_segments_add_body(name=name, relations=relations)
 
         response = self._request(method='POST', location=location, params=params, headers=headers, json=json)
 
         return response
 
     def delete_segment(self, segment_id):
-        location = f'api/v2/remarketing/segments/{segment_id}.json'
+        location = delete_segment_location(segment_id=segment_id)
         response = self._request(method='DELETE', location=location, expected_status=204, jsonify=False)
 
         return response
 
     def get_segments_list(self):
-        location = 'api/v2/remarketing/segments.json'
-
-        params_dict = {
-            'fields': 'relations__object_type,relations__object_id,relations__params,relations__params__score,'
-                      'relations__id,relations_count,id,name,pass_condition,created,campaign_ids,users,flags',
-            'limit': 500
-        }
+        location = GET_SEGMENTS_LIST_LOCATION
+        params_dict = GET_SEGMENTS_LIST_PARAMS
         params = self.params_to_string(params=params_dict)
 
         response = self._request(method='GET', location=location, params=params)
