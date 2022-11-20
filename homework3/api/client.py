@@ -4,7 +4,7 @@ import requests
 
 from api.custom_api_exceptions import *
 from static.api_urls import *
-from static.requests_body import *
+from static.requests_attributes import *
 
 
 class ApiClient:
