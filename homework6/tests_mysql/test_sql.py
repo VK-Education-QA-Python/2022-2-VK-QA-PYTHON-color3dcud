@@ -1,12 +1,12 @@
 import pytest
+
+from models.biggest_requests_by_size import BiggestReqModel
+from models.req_by_method import ReqByMethodModel
+from models.top_ips_500 import TopIpsModel
+from models.top_ten_requests import TopTenReqModel
+from models.total_req import TotalReqModel
 from mysql.client import MysqlClient
 from utils.builder import MysqlBuilder
-
-from models.total_req import TotalReqModel
-from models.req_by_method import ReqByMethodModel
-from models.top_ten_requests import TopTenReqModel
-from models.biggest_requests_by_size import BiggestReqModel
-from models.top_ips_500 import TopIpsModel
 
 
 class MyTest:
@@ -16,7 +16,7 @@ class MyTest:
 
     @pytest.fixture(scope='function', autouse=True)
     def setup(self, mysql_client, files_path):
-        self.client:MysqlClient = mysql_client
+        self.client: MysqlClient = mysql_client
         self.builder: MysqlBuilder = MysqlBuilder(self.client, files_path)
         self.prepare()
 

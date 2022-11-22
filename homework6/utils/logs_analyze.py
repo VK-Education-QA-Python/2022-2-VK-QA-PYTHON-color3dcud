@@ -4,7 +4,6 @@ import collections
 class LogAnalyzer:
     HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
 
-
     def __init__(self, logs_file):
         self.logs_file = logs_file
         self.logs_list = self.get_logs_list(logs_file=logs_file)

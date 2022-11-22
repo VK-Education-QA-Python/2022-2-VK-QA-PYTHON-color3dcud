@@ -1,5 +1,7 @@
 import os
+
 import pytest
+
 from mysql.client import MysqlClient
 from static.db_credentials import *
 

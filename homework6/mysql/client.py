@@ -1,10 +1,11 @@
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
-from models.total_req import TotalReqBase as BaseReq
-from models.req_by_method import ReqByMethodBase
-from models.top_ten_requests import TopTenReqBase
+
 from models.biggest_requests_by_size import BiggestReqBase
+from models.req_by_method import ReqByMethodBase
 from models.top_ips_500 import TopIpsBase
+from models.top_ten_requests import TopTenReqBase
+from models.total_req import TotalReqBase as BaseReq
 
 
 class MysqlClient:

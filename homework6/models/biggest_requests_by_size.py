@@ -1,11 +1,10 @@
+from sqlalchemy import Column, Integer, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, TEXT, VARCHAR
 
 BiggestReqBase = declarative_base()
 
 
 class BiggestReqModel(BiggestReqBase):
-
     __tablename__ = 'biggest_req'
     __table_arg__ = {'mysql_charset': 'utf8'}
 

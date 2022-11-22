@@ -12,7 +12,8 @@ class MysqlBuilder:
     def create_total_req(self):
         file_name = self.log_file_name
         total_req = self.log_analyzer.get_total_requests()
-        self.client.execute_query(f'insert into `total_req` (`file_name`, `total_req`) values ("{file_name}", {total_req})')
+        self.client.execute_query(
+            f'insert into `total_req` (`file_name`, `total_req`) values ("{file_name}", {total_req})')
 
     def create_req_by_method(self):
         req_by_method = self.log_analyzer.get_total_requests_by_method()
@@ -20,7 +21,8 @@ class MysqlBuilder:
         for i in range(len(req_by_method)):
             method = req_by_method[i][0]
             count = req_by_method[i][1]
-            self.client.execute_query(f'insert into `req_by_method` (`request_method`, `total_req`) values ("{method}", {count})')
+            self.client.execute_query(
+                f'insert into `req_by_method` (`request_method`, `total_req`) values ("{method}", {count})')
 
     def create_top_ten_requests(self):
         top_requests = self.log_analyzer.get_top_requests()

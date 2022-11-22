@@ -1,11 +1,10 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, CHAR
+from sqlalchemy.ext.declarative import declarative_base
 
 ReqByMethodBase = declarative_base()
 
 
 class ReqByMethodModel(ReqByMethodBase):
-
     __tablename__ = 'req_by_method'
     __table_arg__ = {'mysql_charset': 'utf8'}
 

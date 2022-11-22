@@ -1,11 +1,10 @@
+from sqlalchemy import Column, Integer, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, VARCHAR, TEXT
 
 TopTenReqBase = declarative_base()
 
 
 class TopTenReqModel(TopTenReqBase):
-
     __tablename__ = 'top_ten_requests'
     __table_arg__ = {'mysql_charset': 'utf8'}
 
