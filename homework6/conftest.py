@@ -7,7 +7,7 @@ from static.db_credentials import *
 
 
 def pytest_configure(config):
-    mysql_client = MysqlClient(user=USER, password=PASSWORD, db_name=DB_NAME)
+    mysql_client = MysqlClient(user=USER, password=password(), db_name=DB_NAME)
     if not hasattr(config, 'workerinput'):
         mysql_client.create_db()
     mysql_client.connect(db_created=True)
