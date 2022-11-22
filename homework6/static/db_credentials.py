@@ -1,0 +1,3 @@
+USER = 'root'
+PASSWORD = '0000'
+DB_NAME = 'TEST_SQL'
