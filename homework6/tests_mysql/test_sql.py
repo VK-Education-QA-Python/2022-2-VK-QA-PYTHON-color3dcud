@@ -21,25 +21,9 @@ class MyTest:
         self.builder: MysqlBuilder = MysqlBuilder(self.client, files_path)
         self.prepare()
 
-    def get_total_req(self, **filters):
+    def get_table_data(self, table_model, **filters):
         self.client.session.commit()
-        return self.client.session.query(TotalReqModel).filter_by(**filters).all()
-
-    def get_req_by_method(self, **filters):
-        self.client.session.commit()
-        return self.client.session.query(ReqByMethodModel).filter_by(**filters).all()
-
-    def get_top_ten_requests(self, **filters):
-        self.client.session.commit()
-        return self.client.session.query(TopTenReqModel).filter_by(**filters).all()
-
-    def get_biggest_req(self, **filters):
-        self.client.session.commit()
-        return self.client.session.query(BiggestReqModel).filter_by(**filters).all()
-
-    def get_top_ips_500(self, **filters):
-        self.client.session.commit()
-        return self.client.session.query(TopIpsModel).filter_by(**filters).all()
+        return self.client.session.query(table_model).filter_by(**filters).all()
 
 
 class TestTotalLogReq(MyTest):
@@ -47,7 +31,7 @@ class TestTotalLogReq(MyTest):
         self.builder.create_total_req()
 
     def test_total_req(self):
-        total_req = self.get_total_req()
+        total_req = self.get_table_data(table_model=TotalReqModel)
         total_req_analyzer = self.builder.log_analyzer.get_total_requests()
 
         assert len(total_req) == 1
@@ -61,7 +45,7 @@ class TestReqByMethod(MyTest):
         self.builder.create_req_by_method()
 
     def test_req_by_method(self):
-        req_by_method = self.get_req_by_method()
+        req_by_method = self.get_table_data(table_model=ReqByMethodModel)
         req_by_method_analyzer = self.builder.log_analyzer.get_total_requests_by_method()
 
         assert len(req_by_method) == len(req_by_method_analyzer)
@@ -75,7 +59,7 @@ class TestTopTenRequests(MyTest):
         self.builder.create_top_ten_requests()
 
     def test_top_ten_requests(self):
-        top_ten_req = self.get_top_ten_requests()
+        top_ten_req = self.get_table_data(table_model=TopTenReqModel)
         top_ten_req_analyzer = self.builder.log_analyzer.get_top_requests()
 
         assert len(top_ten_req) == len(top_ten_req_analyzer)
@@ -89,7 +73,7 @@ class TestBiggestReq(MyTest):
         self.builder.create_biggest_req()
 
     def test_biggest_req(self):
-        biggest_req = self.get_biggest_req()
+        biggest_req = self.get_table_data(table_model=BiggestReqModel)
         biggest_req_analyzer = self.builder.log_analyzer.get_biggest_req_by_size()
 
         assert len(biggest_req) == len(biggest_req_analyzer)
@@ -105,7 +89,7 @@ class TestTopIps500(MyTest):
         self.builder.create_top_ips_500()
 
     def test_top_ips_500(self):
-        top_ips_500 = self.get_top_ips_500()
+        top_ips_500 = self.get_table_data(table_model=TopIpsModel)
         top_ips_500_analyzer = self.builder.log_analyzer.get_most_often_ip_500()
 
         assert len(top_ips_500) == len(top_ips_500_analyzer)
