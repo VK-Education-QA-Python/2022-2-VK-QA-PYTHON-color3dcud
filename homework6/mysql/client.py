@@ -1,12 +1,6 @@
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 
-from models.biggest_requests_by_size import BiggestReqBase
-from models.req_by_method import ReqByMethodBase
-from models.top_ips_500 import TopIpsBase
-from models.top_ten_requests import TopTenReqBase
-from models.total_req import TotalReqBase as BaseReq
-
 
 class MysqlClient:
 
@@ -40,22 +34,6 @@ class MysqlClient:
         if fetch:
             return res.fetchall()
 
-    def create_table_total_requests(self):
-        if not sqlalchemy.inspect(self.engine).has_table('total_req'):
-            BaseReq.metadata.tables['total_req'].create(self.engine)
-
-    def create_table_req_by_method(self):
-        if not sqlalchemy.inspect(self.engine).has_table('req_by_method'):
-            ReqByMethodBase.metadata.tables['req_by_method'].create(self.engine)
-
-    def create_table_top_ten_requests(self):
-        if not sqlalchemy.inspect(self.engine).has_table('top_ten_requests'):
-            TopTenReqBase.metadata.tables['top_ten_requests'].create(self.engine)
-
-    def create_table_biggest_req(self):
-        if not sqlalchemy.inspect(self.engine).has_table('biggest_req'):
-            BiggestReqBase.metadata.tables['biggest_req'].create(self.engine)
-
-    def create_table_top_ips_500(self):
-        if not sqlalchemy.inspect(self.engine).has_table('top_ips_500'):
-            TopIpsBase.metadata.tables['top_ips_500'].create(self.engine)
+    def create_table(self, table_name, table_base):
+        if not sqlalchemy.inspect(self.engine).has_table(table_name):
+            table_base.metadata.tables[table_name].create(self.engine)

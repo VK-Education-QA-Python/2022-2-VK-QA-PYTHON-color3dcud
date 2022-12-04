@@ -4,6 +4,7 @@ import pytest
 
 from mysql.client import MysqlClient
 from static.db_credentials import *
+from static.tables_base import TABLES_BASE
 
 
 def pytest_configure(config):
@@ -12,11 +13,10 @@ def pytest_configure(config):
         mysql_client.create_db()
     mysql_client.connect(db_created=True)
     if not hasattr(config, 'workerinput'):
-        mysql_client.create_table_total_requests()
-        mysql_client.create_table_req_by_method()
-        mysql_client.create_table_top_ten_requests()
-        mysql_client.create_table_biggest_req()
-        mysql_client.create_table_top_ips_500()
+        for table in TABLES_BASE:
+            table_name = table
+            table_base = TABLES_BASE[table]
+            mysql_client.create_table(table_name=table_name, table_base=table_base)
 
     config.mysql_client = mysql_client
 

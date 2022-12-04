@@ -8,8 +8,6 @@ from models.total_req import TotalReqModel
 from mysql.client import MysqlClient
 from utils.builder import MysqlBuilder
 
-from utils.logs_analyze import LogAnalyzer
-
 
 class MyTest:
     def prepare(self):
