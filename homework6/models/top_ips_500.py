@@ -9,7 +9,8 @@ class TopIpsModel(TopIpsBase):
     __table_arg__ = {'mysql_charset': 'utf8'}
 
     def __repr__(self):
-        return f'Ip ={self.ip}, total requests = {self.total_req}'
+        return f'Ip = {self.ip}, total requests = {self.total_req}'
 
-    ip = Column(VARCHAR(30), primary_key=True, unique=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    ip = Column(VARCHAR(30), unique=True, nullable=False)
     total_req = Column(Integer, nullable=False)

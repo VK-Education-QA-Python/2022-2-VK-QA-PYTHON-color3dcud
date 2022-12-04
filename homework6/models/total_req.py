@@ -9,7 +9,8 @@ class TotalReqModel(TotalReqBase):
     __table_arg__ = {'mysql_charset': 'utf8'}
 
     def __repr__(self):
-        return f'Filename ={self.file_name}, total_requests = {self.total_req}'
+        return f'Filename = {self.file_name}, total_requests = {self.total_req}'
 
-    file_name = Column(CHAR(50), primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    file_name = Column(CHAR(50), nullable=False)
     total_req = Column(Integer, nullable=False)

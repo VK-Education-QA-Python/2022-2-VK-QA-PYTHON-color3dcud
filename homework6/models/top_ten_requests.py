@@ -9,7 +9,8 @@ class TopTenReqModel(TopTenReqBase):
     __table_arg__ = {'mysql_charset': 'utf8'}
 
     def __repr__(self):
-        return f'Request url ={self.request_url}, total requests = {self.total_req}'
+        return f'Request url = {self.request_url}, total requests = {self.total_req}'
 
-    request_url = Column(VARCHAR(255), primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    request_url = Column(VARCHAR(255), nullable=False)
     total_req = Column(Integer, nullable=False)
