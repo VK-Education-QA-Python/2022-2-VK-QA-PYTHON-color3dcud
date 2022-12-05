@@ -1,0 +1,16 @@
+from sqlalchemy import Column, Integer, VARCHAR
+from sqlalchemy.ext.declarative import declarative_base
+
+TopIpsBase = declarative_base()
+
+
+class TopIpsModel(TopIpsBase):
+    __tablename__ = 'top_ips_500'
+    __table_arg__ = {'mysql_charset': 'utf8'}
+
+    def __repr__(self):
+        return f'Ip = {self.ip}, total requests = {self.total_req}'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    ip = Column(VARCHAR(30), unique=True, nullable=False)
+    total_req = Column(Integer, nullable=False)
