@@ -1,0 +1,73 @@
+version: '2.1'
+
+networks:
+  project_network:
+    external: true
+    name: project_network
+
+services:
+  project_db:
+    image: "mysql:latest"
+    hostname: "project_base"
+    container_name: "project_base"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: '0000'
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./docker/project_db/mysql.sql:/dump/mysql.sql
+    command: --init-file /dump/mysql.sql
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', '-uroot', '-p0000', 'ping']
+      timeout: 1s
+      retries: 30
+    networks:
+      - project_network
+
+  vk_api_mock:
+    image: "vk_api_mock"
+    hostname: "vk_api_mock"
+    container_name: "vk_api_mock"
+    ports:
+      - "8000:8000"
+    build:
+      context: docker/vk_api_mock
+    networks:
+      - project_network
+
+  my_app:
+    image: "myapp"
+    networks:
+      - project_network
+    tty: true
+    volumes:
+      - ./docker/myapp:/config
+    ports:
+      - "8080:8080"
+    entrypoint: /app/myapp --config=/config/myapp.config
+    depends_on:
+      project_db:
+        condition: service_healthy
+      vk_api_mock:
+        condition: service_started
+    healthcheck:
+      test: curl -sS http://0.0.0.0:8080/status || echo 1
+      timeout: 1s
+      retries: 30
+
+
+  selenoid:
+    image: aerokube/selenoid:latest-release
+    container_name: selenoid
+    networks:
+      - project_network
+    volumes:
+      - "./docker/selenoid:/conf/selenoid"
+      - "./docker/selenoid/logs:/opt/selenoid/logs"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    command: [ "-conf", "/conf/selenoid/browsers.json", "-log-output-dir", "/opt/selenoid/logs", "-container-network", "project_network" ]
+#    command: [ "-conf", "/conf/selenoid/browsers.json", "-log-output-dir", "/opt/selenoid/logs", "my_app:my_app" ]
+    ports:
+      - 4444:4444
+
